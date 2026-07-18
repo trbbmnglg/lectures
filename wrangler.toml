@@ -6,6 +6,7 @@ workers_dev = true
 [assets]
 directory = "./dist"
 not_found_handling = "single-page-application"
+binding = "ASSETS"
 
 # Run: npx wrangler secret put ANTHROPIC_API_KEY
 # Run: npx wrangler d1 create lectures-db  → paste the id below
