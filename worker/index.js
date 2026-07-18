@@ -23,6 +23,11 @@ export default {
     const url = new URL(request.url)
     const path = url.pathname
 
+    // Static assets — outside try/catch so missing files return 404, not 500
+    if (!path.startsWith('/api/')) {
+      return env.ASSETS.fetch(request)
+    }
+
     try {
       let res
       if (path.startsWith('/api/ai')) {
@@ -32,8 +37,9 @@ export default {
       } else if (path.startsWith('/api/decks')) {
         res = await handleDecks(request, env, path)
       } else {
-        // Serve static assets via ASSETS binding (wrangler [site])
-        return env.ASSETS.fetch(request)
+        return cors(new Response(JSON.stringify({ error: 'Not found' }), {
+          status: 404, headers: { 'Content-Type': 'application/json' },
+        }))
       }
       return cors(res)
     } catch (e) {
