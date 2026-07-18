@@ -36,7 +36,7 @@ export default function AdminApp() {
       <aside style={{ width:200, flexShrink:0, display:'flex', flexDirection:'column', borderRight:'1px solid rgba(237,234,226,.08)', background:'rgba(255,255,255,.02)', padding:'32px 0 24px' }}>
         <div style={{ padding:'0 20px', marginBottom:36 }}>
           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9.5, letterSpacing:'.2em', textTransform:'uppercase', color:'#E8930C', marginBottom:8 }}>
-            Lectern
+            Lectures
           </div>
           <div style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:18, letterSpacing:'-.02em', color:'#edeae2' }}>
             Admin

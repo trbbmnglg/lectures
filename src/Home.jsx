@@ -10,12 +10,12 @@ const LEVEL_DOT = { Beginner: '#3E7A52', Intermediate: '#E8930C', Advanced: '#B0
 /* ── theme hook ── */
 function useTheme() {
   const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem('lectern-theme')
+    const saved = localStorage.getItem('lectures-theme')
     return saved ? saved === 'dark' : true
   })
   useEffect(() => {
     document.documentElement.classList.toggle('light', !dark)
-    localStorage.setItem('lectern-theme', dark ? 'dark' : 'light')
+    localStorage.setItem('lectures-theme', dark ? 'dark' : 'light')
   }, [dark])
   return [dark, setDark]
 }
@@ -70,7 +70,7 @@ function Sidebar({ dark, setDark, activeCat, setActiveCat }) {
           AI Lecture Series
         </div>
         <div style={{ fontFamily: 'var(--disp)', fontWeight: 700, fontSize: 22, letterSpacing: '-.02em', color: 'var(--text)' }}>
-          Lectern
+          Lectures
         </div>
       </div>
 

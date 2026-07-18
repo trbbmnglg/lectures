@@ -1,11 +1,11 @@
 {
-  "name": "lectern",
+  "name": "lectures",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "predev": "node -e \"require('fs').mkdirSync('dist', {recursive:true})\"",
     "dev": "concurrently -n vite,worker -c cyan,yellow \"vite\" \"wrangler dev --port 8787\"",
-    "dev:seed": "wrangler d1 execute lectern-db --local --file=worker/schema.sql && wrangler d1 execute lectern-db --local --file=worker/seed.sql",
+    "dev:seed": "wrangler d1 execute lectures-db --local --file=worker/schema.sql && wrangler d1 execute lectures-db --local --file=worker/seed.sql",
     "build": "vite build",
     "deploy": "vite build && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"

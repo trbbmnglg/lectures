@@ -21,7 +21,7 @@ export default function AdminPin({ onUnlock }) {
 
   return (
     <div style={s.wrap}>
-      <div style={s.eye}>Lectern Admin</div>
+      <div style={s.eye}>Lectures Admin</div>
       <h1 style={s.h1}>Enter PIN</h1>
       <input
         type="password" maxLength={6} value={pin} autoFocus

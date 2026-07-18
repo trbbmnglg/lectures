@@ -1,5 +1,5 @@
 -- Lectern seed — prompt-engineering deck + all slides
--- Run: npx wrangler d1 execute lectern-db --local --file=worker/seed.sql
+-- Run: npx wrangler d1 execute lectures-db --local --file=worker/seed.sql
 
 INSERT OR IGNORE INTO decks (slug, title, subtitle, description, category, duration, level) VALUES (
   'prompt-engineering',

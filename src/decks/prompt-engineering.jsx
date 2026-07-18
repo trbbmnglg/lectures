@@ -1003,9 +1003,9 @@ function useEventContext() {
   const eventId = new URLSearchParams(window.location.search).get("event");
   if (!eventId) return { event: null, eventNotes: {} };
   try {
-    const events = JSON.parse(localStorage.getItem("lectern-events") || "[]");
+    const events = JSON.parse(localStorage.getItem("lectures-events") || "[]");
     const event = events.find((e) => e.id === eventId) || null;
-    const eventNotes = JSON.parse(localStorage.getItem(`lectern-notes-${eventId}`) || "{}");
+    const eventNotes = JSON.parse(localStorage.getItem(`lectures-notes-${eventId}`) || "{}");
     return { event, eventNotes };
   } catch {
     return { event: null, eventNotes: {} };

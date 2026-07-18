@@ -2,23 +2,23 @@
 
 /* ── PIN (sessionStorage only) ────────────────────────────────── */
 export function usePin() {
-  const unlocked = sessionStorage.getItem('lectern-admin-unlocked') === '1'
+  const unlocked = sessionStorage.getItem('lectures-admin-unlocked') === '1'
 
   function tryPin(pin) {
-    const stored = sessionStorage.getItem('lectern-admin-pin') ?? '1234'
+    const stored = sessionStorage.getItem('lectures-admin-pin') ?? '1234'
     if (pin === stored) {
-      sessionStorage.setItem('lectern-admin-unlocked', '1')
+      sessionStorage.setItem('lectures-admin-unlocked', '1')
       return true
     }
     return false
   }
 
   function changePin(newPin) {
-    sessionStorage.setItem('lectern-admin-pin', newPin)
+    sessionStorage.setItem('lectures-admin-pin', newPin)
   }
 
   function lock() {
-    sessionStorage.removeItem('lectern-admin-unlocked')
+    sessionStorage.removeItem('lectures-admin-unlocked')
   }
 
   return { unlocked, tryPin, changePin, lock }

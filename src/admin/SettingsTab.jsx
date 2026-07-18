@@ -59,15 +59,15 @@ export default function SettingsTab() {
       {/* D1 */}
       <section style={sec}>
         <h3 style={h3}>Database</h3>
-        <p style={para}>All data (decks, slides, events, notes) lives in Cloudflare D1 (<code style={code}>lectern-db</code>). To seed the prompt-engineering deck:</p>
+        <p style={para}>All data (decks, slides, events, notes) lives in Cloudflare D1 (<code style={code}>lectures-db</code>). To seed the prompt-engineering deck:</p>
         <code style={{ ...code, display:'block', padding:'8px 12px', background:'rgba(255,255,255,.06)', borderRadius:6, lineHeight:1.9, fontSize:11 }}>
-          npx wrangler d1 execute lectern-db --local --file=worker/schema.sql<br />
-          npx wrangler d1 execute lectern-db --local --file=worker/seed.sql
+          npx wrangler d1 execute lectures-db --local --file=worker/schema.sql<br />
+          npx wrangler d1 execute lectures-db --local --file=worker/seed.sql
         </code>
         <p style={{ ...para, marginTop:10 }}>For production:</p>
         <code style={{ ...code, display:'block', padding:'8px 12px', background:'rgba(255,255,255,.06)', borderRadius:6, lineHeight:1.9, fontSize:11 }}>
-          npx wrangler d1 execute lectern-db --remote --file=worker/schema.sql<br />
-          npx wrangler d1 execute lectern-db --remote --file=worker/seed.sql
+          npx wrangler d1 execute lectures-db --remote --file=worker/schema.sql<br />
+          npx wrangler d1 execute lectures-db --remote --file=worker/seed.sql
         </code>
       </section>
     </div>

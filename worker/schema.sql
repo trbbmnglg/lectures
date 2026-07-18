@@ -1,4 +1,4 @@
--- Lectern D1 schema — idempotent (safe to re-run)
+-- Lectures D1 schema — idempotent (safe to re-run)
 
 CREATE TABLE IF NOT EXISTS decks (
   slug        TEXT PRIMARY KEY,
