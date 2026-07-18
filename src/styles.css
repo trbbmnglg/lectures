@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ── tokens ── */
+:root {
+  --bg:       #0f0f18;
+  --surface:  rgba(255,255,255,.04);
+  --surface2: rgba(255,255,255,.07);
+  --border:   rgba(237,234,226,.1);
+  --text:     #edeae2;
+  --muted:    rgba(237,234,226,.45);
+  --accent:   #E8930C;
+  --accent-d: #B9740A;
+  --accent-f: rgba(232,147,12,.12);
+  --green:    #3E7A52;
+  --red:      #B0533C;
+  --disp:     'Space Grotesk', sans-serif;
+  --sans:     'IBM Plex Sans', sans-serif;
+  --mono:     'IBM Plex Mono', monospace;
+  --sidebar:  220px;
+}
+
+:root.light {
+  --bg:       #f5f3ee;
+  --surface:  rgba(0,0,0,.04);
+  --surface2: rgba(0,0,0,.07);
+  --border:   rgba(0,0,0,.1);
+  --text:     #1a1916;
+  --muted:    rgba(26,25,22,.5);
+  --accent:   #B9740A;
+  --accent-d: #8a5507;
+  --accent-f: rgba(185,116,10,.1);
+  --green:    #2d6641;
+  --red:      #8f3a27;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .2s, color .2s;
+}
+
+a { color: var(--accent); text-decoration: none; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
