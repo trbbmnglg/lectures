@@ -228,9 +228,12 @@ function DeckCard({ deck }) {
       <div style={{ fontFamily: 'var(--sans)', fontSize: 12.5, color: 'var(--accent)', fontWeight: 500, marginBottom: 10 }}>{deck.subtitle}</div>
       <div style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, flex: 1, marginBottom: 18 }}>{deck.description}</div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', gap: 14 }}>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
           <Meta>{deck.duration}</Meta>
           <Meta color={LEVEL_DOT[deck.level]}>{deck.level}</Meta>
+          {deck.live && deck.version && (
+            <Meta>v{deck.version}{deck.updated ? ` · ${deck.updated}` : ''}</Meta>
+          )}
         </div>
         {deck.live && (
           <span style={{ fontFamily: 'var(--sans)', fontSize: 12.5, fontWeight: 600, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 4 }}>

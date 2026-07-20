@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { LayoutGrid, Search, PenLine, Code, BookOpen, Globe } from "lucide-react";
+import { SlideJumper, ChangelogButton } from "./_shared.jsx";
 
 export const meta = {
   title: "Introduction to LLMs",
@@ -7,6 +9,12 @@ export const meta = {
   category: "AI Foundations",
   duration: "60 – 75 min",
   level: "Beginner",
+  version: "1.1",
+  updated: "Jul 2026",
+  changelog: [
+    { v: "1.0", date: "Jul 2026", note: "Initial release — 27 slides covering LLM mechanics, 2026 model landscape, benchmarks, daily-life examples, and 2 labs." },
+    { v: "1.1", date: "Jul 2026", note: "Accuracy pass: exact token counts with o200k_base tokenizer, benchmark provenance, speaker-note hedges replaced with facts, SVG icons." },
+  ],
 };
 
 /* slideIndex is consumed by the admin notes editor */
@@ -375,29 +383,58 @@ const SLIDES = [
   },
   {
     id: "tokens", section: "Under the Hood — Tokens", timing: "10 min",
-    notes: "Everything in an LLM is measured in tokens. A token is roughly a word-chunk — about three quarters of a word, or four characters, in English. The word 'unhappiness' is probably two or three tokens. A space is often its own token. Emojis can cost several tokens. Every API charges per token, and every model has a maximum token limit. A '1 million token context window' is about 750,000 words, or roughly 1,500 pages. Different models use different tokenizers, so the same sentence produces different token counts — and that affects your bill.",
+    notes: "Everything in an LLM is measured in tokens. A token is roughly three quarters of a word, or about four characters in English. The word 'unhappiness' is exactly 4 tokens in GPT-4o's tokenizer: un / hap / pi / ness. A leading space is part of the next word's token — the string ' world' is one token. A standalone repeated space gets its own token. One plain emoji is 1 token; a skin-tone modifier adds 2 more tokens on top. All of this uses OpenAI's o200k_base tokenizer — Claude and Gemini use different tokenizers so token counts vary across providers. Every API charges per token, and every model has a context-window limit measured in tokens. Verify any string at platform.openai.com/tokenizer.",
     render: () => (
-      <div>
-        <h2 className="sl-h2">Tokens — the unit of measurement for everything</h2>
-        <p className="sl-lede">A token is roughly <strong style={{color:"#edeae2"}}>¾ of a word</strong> · <strong style={{color:"#edeae2"}}>~4 characters</strong> in English. Cost, speed, and limits are all counted in tokens.</p>
-        <div className="sl-tok-strip">
-          {[
-            ["The ","t0"],["quick ","t1"],["brown ","t2"],["fox ","t3"],
-            ["un","t0"],["hap","t1"],["pi","t2"],["ness","t3"],
-            [" jumps ","t0"],["over ","t1"],["the ","t2"],["lazy ","t3"],["dog","t0"],
-          ].map(([w,c],i) => <span key={i} className={`sl-tok ${c}`}>{w}</span>)}
+    <div>
+      <h2 className="sl-h2">Tokens — the unit of measurement for everything</h2>
+      <p className="sl-lede">A token is roughly <strong style={{color:"#edeae2"}}>¾ of a word</strong> · <strong style={{color:"#edeae2"}}>~4 characters</strong> in English. Cost, speed, and limits are all counted in tokens.</p>
+      <div className="sl-tok-strip">
+        {[
+          ["The ","t0"],["quick ","t1"],["brown ","t2"],["fox ","t3"],
+          ["un","t0"],["hap","t1"],["pi","t2"],["ness","t3"],
+          [" jumps ","t0"],["over ","t1"],["the ","t2"],["lazy ","t3"],["dog","t0"],
+        ].map(([w,c],i) => <span key={i} className={`sl-tok ${c}`}>{w}</span>)}
+      </div>
+      <div className="sl-cards3" style={{marginTop:10}}>
+        {[
+          ["~¾ word per token", "In English. A leading space is part of the next word's token — \" world\" is 1 token. A repeated standalone space is its own token."],
+          ["Input + Output billed separately", "Your prompt is input tokens. The model's reply is output tokens. Output typically costs 3–6× more than input."],
+          ["Context window = the token limit", "A \"1M context\" model can hold ~750,000 words in one session. Fill it up and older content gets dropped."],
+        ].map(([h,p]) => (
+          <div className="sl-card" key={h}><h4>{h}</h4><p>{p}</p></div>
+        ))}
+      </div>
+      <div style={{marginTop:14}}>
+        <div style={{fontFamily:"var(--mono)",fontSize:10,letterSpacing:".12em",textTransform:"uppercase",color:"rgba(237,234,226,.35)",marginBottom:8}}>
+          Exact counts — OpenAI o200k_base tokenizer (GPT-4o / GPT-5). Verify any string at platform.openai.com/tokenizer. Other providers use different tokenizers — counts vary.
         </div>
-        <div className="sl-cards3">
-          {[
-            ["~¾ word per token", "In English. Other languages (Chinese, Arabic) often use more tokens per character — costs more to process."],
-            ["Input + Output billed separately", "Your prompt is input tokens. The model's reply is output tokens. Output typically costs 3–6× more than input."],
-            ["Context window = the token limit", "A \"1M context\" model can hold ~750,000 words in one session. Fill it up and older content gets dropped."],
-          ].map(([h,p]) => (
-            <div className="sl-card" key={h}><h4>{h}</h4><p>{p}</p></div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr auto auto",gap:"4px 16px",alignItems:"center"}}>
+          {[["heading","String","Tokens","Breakdown"],
+            ["row","hello world","2","hello · ⎵world"],
+            ["row","ChatGPT-4o","5","Chat · GPT · - · 4 · o"],
+            ["row","antidisestablishmentarianism","6","ant · idis · est · ablishment · arian · ism"],
+            ["row","👍🏽 great!","5","👍(1) · 🏽(2) · ⎵great(1) · !(1)"],
+            ["row","你好，世界","3","你好(1) · ，(1) · 世界(1)"],
+          ].map(([type,str,count,breakdown],i) => type === "heading" ? (
+            <React.Fragment key={i}>
+              <div style={{fontFamily:"var(--mono)",fontSize:9.5,letterSpacing:".1em",textTransform:"uppercase",color:"rgba(237,234,226,.3)",paddingBottom:4,borderBottom:"1px solid rgba(237,234,226,.07)"}}>{str}</div>
+              <div style={{fontFamily:"var(--mono)",fontSize:9.5,letterSpacing:".1em",textTransform:"uppercase",color:"rgba(237,234,226,.3)",paddingBottom:4,borderBottom:"1px solid rgba(237,234,226,.07)",textAlign:"center"}}>{count}</div>
+              <div style={{fontFamily:"var(--mono)",fontSize:9.5,letterSpacing:".1em",textTransform:"uppercase",color:"rgba(237,234,226,.3)",paddingBottom:4,borderBottom:"1px solid rgba(237,234,226,.07)"}}>{breakdown}</div>
+            </React.Fragment>
+          ) : (
+            <React.Fragment key={i}>
+              <div style={{fontFamily:"var(--mono)",fontSize:"clamp(11px,1.1vw,13px)",color:"rgba(237,234,226,.8)",padding:"4px 0"}}>{str}</div>
+              <div style={{fontFamily:"var(--mono)",fontSize:"clamp(13px,1.3vw,16px)",color:"var(--a)",fontWeight:600,textAlign:"center"}}>{count}</div>
+              <div style={{fontFamily:"var(--mono)",fontSize:"clamp(9px,.9vw,11px)",color:"rgba(237,234,226,.4)"}}>{breakdown}</div>
+            </React.Fragment>
           ))}
         </div>
+        <div style={{marginTop:8,fontFamily:"var(--mono)",fontSize:10,color:"rgba(237,234,226,.3)"}}>
+          ⎵ = space · 👍🏽 has a skin-tone modifier (U+1F3FD) that costs 2 tokens — plain 👍 costs only 1.
+        </div>
       </div>
-    ),
+    </div>
+  ),
   },
   {
     id: "context", section: "Under the Hood — Context", timing: "14 min",
@@ -639,17 +676,17 @@ const SLIDES = [
   },
   {
     id: "bench-what", section: "Benchmarks — What They Test", timing: "35 min",
-    notes: "Four benchmarks you'll see repeatedly. MMLU-Pro: broad multiple-choice knowledge across 57 subjects — harder successor to MMLU, which most models now max out. GPQA Diamond: graduate-level science questions designed to be Google-proof — you can't find the answer by searching. SWE-bench Verified/Pro: can the model fix a real GitHub bug — write a patch that passes the test suite? AIME 2025: elite high-school competition math — now saturated; multiple models score 100%, so it no longer differentiates them. ARC-AGI-2: abstract visual reasoning designed to resist memorization — still genuinely hard.",
+    notes: "Five benchmarks you will see in every AI launch announcement. MMLU-Pro was created by TIGER-Lab in 2024 as a harder successor to the original MMLU, which most frontier models now saturate. GPQA Diamond was created by Rein et al. at NYU, Cohere, and Anthropic — the questions are deliberately Google-proof so you cannot find the answer with a web search. SWE-bench was created at Princeton and the University of Chicago; the Verified subset was curated by OpenAI. AIME is a human math competition run by the Mathematical Association of America — it is used as a benchmark but was not built by an AI lab; it is now saturated at 100% for frontier models. ARC-AGI was created by François Chollet in 2019; ARC-AGI-2 was published by the ARC Prize Foundation in 2025 and is still genuinely difficult.",
     render: () => (
       <div>
         <h2 className="sl-h2">The standard benchmarks — what each actually tests</h2>
         <div className="sl-bench-grid" style={{marginTop:16}}>
           {[
-            ["MMLU-Pro","~91% top",91,"Broad knowledge & reasoning across 57 subjects (law, medicine, history, STEM). Harder successor to MMLU, which most models now max out."],
-            ["GPQA Diamond","~95% top",95,"Graduate-level biology, chemistry & physics. 'Google-proof' — web-searching doesn't help. Tests genuine expert reasoning."],
-            ["SWE-bench Verified","~95% top",95,"Fix real GitHub issues: write a patch that passes the test suite. The practical coding-agent benchmark — closest to actual developer work."],
-            ["AIME 2025","~100% ⚠ saturated",100,"Elite high-school competition math. Now saturated — several models score 100%, so it no longer differentiates frontier models."],
-            ["ARC-AGI-2","~35% — still hard",35,"Abstract visual pattern reasoning designed to resist memorization. Scores far below human level — a genuine unsolved challenge."],
+            ["MMLU-Pro","~91% top",91,"Broad knowledge & reasoning across 57 subjects. Harder successor to MMLU, now maxed out. Created by TIGER-Lab (2024) · arXiv:2406.01574."],
+            ["GPQA Diamond","~95% top",95,"Graduate-level biology, chemistry & physics. 'Google-proof' — web-searching doesn't help. Created by Rein et al., NYU / Cohere / Anthropic (2023) · arXiv:2311.12022."],
+            ["SWE-bench Verified","~95% top",95,"Fix real GitHub issues: write a patch that passes the test suite. Created by Jimenez, Yang et al., Princeton & U Chicago (2023) · arXiv:2310.06770."],
+            ["AIME 2025","~100% ⚠ saturated",100,"Elite high-school competition math. Run by the Mathematical Association of America — not built by an AI lab. Now saturated; use SWE-bench or GPQA for differentiation."],
+            ["ARC-AGI-2","~35% — still hard",35,"Abstract visual reasoning designed to resist memorization. Created by François Chollet (2019, arXiv:1911.01547); ARC-AGI-2 updated by ARC Prize Foundation (2025)."],
           ].map(([name,score,pct,desc])=>(
             <div className="sl-bench-item" key={name}>
               <div className="sl-bench-head">
@@ -724,14 +761,14 @@ const SLIDES = [
         <h2 className="sl-h2">Five ways LLMs are changing knowledge work today</h2>
         <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:12,marginTop:18}}>
           {[
-            ["🔍","Search & Answers","Perplexity, Gemini search, ChatGPT Search — get a synthesized, cited answer instead of reading five articles."],
-            ["✍️","Writing & Editing","First drafts, email rewrites, meeting summaries, tone adjustments — iterate in seconds instead of hours."],
-            ["💻","Coding & Debugging","Copilot, Claude in the IDE — explain unfamiliar code, write boilerplate, debug error messages, review PRs."],
-            ["📚","Learning & Tutoring","Ask follow-up questions at any level, get worked examples, generate practice problems, explain concepts three ways."],
-            ["🌍","Translation & Localization","Language translation with cultural nuance — adapt documents, not just words, for new audiences."],
-          ].map(([icon,title,desc])=>(
+            [Search,   "Search & Answers","Perplexity, Gemini search, ChatGPT Search — get a synthesized, cited answer instead of reading five articles."],
+            [PenLine,  "Writing & Editing","First drafts, email rewrites, meeting summaries, tone adjustments — iterate in seconds instead of hours."],
+            [Code,     "Coding & Debugging","Copilot, Claude in the IDE — explain unfamiliar code, write boilerplate, debug error messages, review PRs."],
+            [BookOpen, "Learning & Tutoring","Ask follow-up questions at any level, get worked examples, generate practice problems, explain concepts three ways."],
+            [Globe,    "Translation & Localization","Language translation with cultural nuance — adapt documents, not just words, for new audiences."],
+          ].map(([Icon,title,desc])=>(
             <div className="sl-card" key={title}>
-              <div style={{fontSize:26,marginBottom:10}}>{icon}</div>
+              <div style={{marginBottom:10,color:"var(--a)"}}><Icon size={26} /></div>
               <h4>{title}</h4>
               <p>{desc}</p>
             </div>
@@ -922,6 +959,9 @@ const SLIDES = [
               "Brown et al. — \"Language Models are Few-Shot Learners\" / GPT-3 (2020) · arxiv.org/abs/2005.14165",
               "Hoffmann et al. — \"Training Compute-Optimal LLMs\" / Chinchilla (2022) · arxiv.org/abs/2203.15556",
               "Stanford HAI — 2026 AI Index Report · hai.stanford.edu/ai-index/2026-ai-index-report",
+              "Hendrycks et al. — MMLU (2021) arXiv:2009.03300 · MMLU-Pro: TIGER-Lab (2024) arXiv:2406.01574",
+              "Rein et al. — GPQA (2023) arXiv:2311.12022 · Jimenez et al. — SWE-bench (2023) arXiv:2310.06770",
+              "Chollet — \"On the Measure of Intelligence\" / ARC-AGI (2019) arXiv:1911.01547",
             ].map(r=><span key={r} className="sl-ref">{r}</span>)}
           </div>
         </div>
@@ -1012,6 +1052,7 @@ export default function IntroToLLMsSlides() {
   const [customNotes, setCustomNotes] = useState({});
   const [timerStart, setTimerStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
+  const [jumpOpen, setJumpOpen] = useState(false);
   const previewRef = useRef(null);
   const [previewW, setPreviewW] = useState(320);
   const total = SLIDES.length;
@@ -1040,15 +1081,21 @@ export default function IntroToLLMsSlides() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === "TEXTAREA") return;
+      if (e.key === "Escape") {
+        if (jumpOpen) { setJumpOpen(false); return; }
+        window.location.href = "/";
+        return;
+      }
+      if (jumpOpen) return;
       if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(idx + 1); }
       else if (e.key === "ArrowLeft") go(idx - 1);
-      else if (e.key === "Escape") window.location.href = "/";
+      else if (e.key === "g" || e.key === "G") setJumpOpen(true);
       else if (e.key === "p" || e.key === "P") setPresenter((v) => !v);
       else if (e.key === "t" || e.key === "T") { setTimerStart(Date.now()); setElapsed(0); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [idx, go]);
+  }, [idx, go, jumpOpen]);
 
   const slide = SLIDES[idx];
   const nextSlide = SLIDES[idx + 1] || null;
@@ -1060,9 +1107,18 @@ export default function IntroToLLMsSlides() {
     <div className="sl-bar" style={presenter ? { position: "static", borderTop: "1px solid var(--ln)" } : {}}>
       <button className="sl-nb" onClick={() => go(idx - 1)} disabled={idx === 0}>← Prev</button>
       <div className="sl-prog"><div className="sl-fill" style={{ width: pct + "%" }} /></div>
+      <button
+        className="sl-nb"
+        onClick={() => setJumpOpen(true)}
+        title="Go to slide (G)"
+        style={{ display: "flex", alignItems: "center", gap: 5 }}
+      >
+        <LayoutGrid size={12} />{idx + 1} / {total}
+      </button>
       <button className="sl-nb" onClick={() => go(idx + 1)} disabled={idx === total - 1}>Next →</button>
       {!presenter && <button className="sl-nb active" onClick={() => setPresenter(true)}>Presenter</button>}
-      {!presenter && <span className="sl-hint">← → P Esc</span>}
+      <ChangelogButton version={meta.version} updated={meta.updated} changelog={meta.changelog} />
+      {!presenter && <span className="sl-hint">← → G P Esc</span>}
     </div>
   );
 
@@ -1071,6 +1127,7 @@ export default function IntroToLLMsSlides() {
     return (
       <div className="sl">
         <style>{styles}</style>
+        {jumpOpen && <SlideJumper slides={SLIDES} current={idx} onJump={go} onClose={() => setJumpOpen(false)} />}
         <div className="sl-wrap" key={animKey} style={{ animation: "slIn .38s cubic-bezier(.2,.7,.2,1) both" }}>
           <div className="sl-top">
             <div className="sl-sec">{slide.section || ""}</div>
@@ -1089,6 +1146,7 @@ export default function IntroToLLMsSlides() {
   return (
     <div className="sl">
       <style>{styles}</style>
+      {jumpOpen && <SlideJumper slides={SLIDES} current={idx} onJump={go} onClose={() => setJumpOpen(false)} />}
       <div className="sl-pm">
         <div className="sl-pm-top">
           <div className={`sl-pm-timer${isWarn ? " warn" : ""}`}>{fmt(elapsed)}</div>
@@ -1097,6 +1155,7 @@ export default function IntroToLLMsSlides() {
             {slide.timing ? ` · Suggested: ~${slide.timing}` : ""}
           </div>
           <div className="sl-pm-actions">
+            <button className="sl-pm-btn" onClick={() => setJumpOpen(true)}>Go to slide (G)</button>
             <button className="sl-pm-btn" onClick={() => { setTimerStart(Date.now()); setElapsed(0); }}>Reset timer (T)</button>
             <button className="sl-pm-btn red" onClick={() => setPresenter(false)}>Exit presenter (P)</button>
           </div>

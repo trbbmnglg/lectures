@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { LayoutGrid } from "lucide-react";
+import { SlideJumper, ChangelogButton } from "./_shared.jsx";
 
 export const meta = {
   title: "Prompt Engineering",
@@ -7,6 +9,11 @@ export const meta = {
   category: "AI Foundations",
   duration: "60 – 75 min",
   level: "Beginner",
+  version: "1.0",
+  updated: "Jul 2026",
+  changelog: [
+    { v: "1.0", date: "Jul 2026", note: "Initial release — 27 slides covering prompt anatomy, few-shot, chain-of-thought, and 3 lab exercises." },
+  ],
 };
 
 /* slideIndex is consumed by the admin notes editor */
@@ -1022,6 +1029,7 @@ export default function PromptEngineeringSlides() {
   const [customNotes, setCustomNotes] = useState({});
   const [timerStart, setTimerStart] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
+  const [jumpOpen, setJumpOpen] = useState(false);
   const previewRef = useRef(null);
   const [previewW, setPreviewW] = useState(320);
   const total = SLIDES.length;
@@ -1050,15 +1058,21 @@ export default function PromptEngineeringSlides() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.target.tagName === "TEXTAREA") return;
+      if (e.key === "Escape") {
+        if (jumpOpen) { setJumpOpen(false); return; }
+        window.location.href = "/";
+        return;
+      }
+      if (jumpOpen) return; // let SlideJumper handle its own keys
       if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(idx + 1); }
       else if (e.key === "ArrowLeft") go(idx - 1);
-      else if (e.key === "Escape") window.location.href = "/";
+      else if (e.key === "g" || e.key === "G") setJumpOpen(true);
       else if (e.key === "p" || e.key === "P") setPresenter((v) => !v);
       else if (e.key === "t" || e.key === "T") { setTimerStart(Date.now()); setElapsed(0); }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [idx, go]);
+  }, [idx, go, jumpOpen]);
 
   const slide = SLIDES[idx];
   const nextSlide = SLIDES[idx + 1] || null;
@@ -1070,9 +1084,18 @@ export default function PromptEngineeringSlides() {
     <div className="sl-bar" style={presenter ? { position: "static", borderTop: "1px solid var(--ln)" } : {}}>
       <button className="sl-nb" onClick={() => go(idx - 1)} disabled={idx === 0}>← Prev</button>
       <div className="sl-prog"><div className="sl-fill" style={{ width: pct + "%" }} /></div>
+      <button
+        className="sl-nb"
+        onClick={() => setJumpOpen(true)}
+        title="Go to slide (G)"
+        style={{ display: "flex", alignItems: "center", gap: 5 }}
+      >
+        <LayoutGrid size={12} />{idx + 1} / {total}
+      </button>
       <button className="sl-nb" onClick={() => go(idx + 1)} disabled={idx === total - 1}>Next →</button>
       {!presenter && <button className="sl-nb active" onClick={() => setPresenter(true)}>Presenter</button>}
-      {!presenter && <span className="sl-hint">← → P Esc</span>}
+      <ChangelogButton version={meta.version} updated={meta.updated} changelog={meta.changelog} />
+      {!presenter && <span className="sl-hint">← → G P Esc</span>}
     </div>
   );
 
@@ -1081,6 +1104,7 @@ export default function PromptEngineeringSlides() {
     return (
       <div className="sl">
         <style>{styles}</style>
+        {jumpOpen && <SlideJumper slides={SLIDES} current={idx} onJump={go} onClose={() => setJumpOpen(false)} />}
         <div className="sl-wrap" key={animKey} style={{ animation: "slIn .38s cubic-bezier(.2,.7,.2,1) both" }}>
           <div className="sl-top">
             <div className="sl-sec">{slide.section || ""}</div>
@@ -1099,6 +1123,7 @@ export default function PromptEngineeringSlides() {
   return (
     <div className="sl">
       <style>{styles}</style>
+      {jumpOpen && <SlideJumper slides={SLIDES} current={idx} onJump={go} onClose={() => setJumpOpen(false)} />}
       <div className="sl-pm">
         <div className="sl-pm-top">
           <div className={`sl-pm-timer${isWarn ? " warn" : ""}`}>{fmt(elapsed)}</div>
@@ -1107,6 +1132,7 @@ export default function PromptEngineeringSlides() {
             {slide.timing ? ` · Suggested: ~${slide.timing}` : ""}
           </div>
           <div className="sl-pm-actions">
+            <button className="sl-pm-btn" onClick={() => setJumpOpen(true)}>Go to slide (G)</button>
             <button className="sl-pm-btn" onClick={() => { setTimerStart(Date.now()); setElapsed(0); }}>Reset timer (T)</button>
             <button className="sl-pm-btn red" onClick={() => setPresenter(false)}>Exit presenter (P)</button>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Sparkles } from 'lucide-react'
 import { eventsApi, decksApi, callClaude } from './useAdmin'
 import { REGISTRY } from '../registry'
 
@@ -193,7 +194,7 @@ Rewrite in a ${tone.toLowerCase()} tone.`
                   fontFamily:"'IBM Plex Mono',monospace", fontSize:11, cursor:'pointer', whiteSpace:'nowrap',
                   opacity: rewriting ? .6 : 1,
                 }}>
-                  {rewriting ? 'Rewriting…' : '✦ Rewrite with AI'}
+                  {rewriting ? 'Rewriting…' : <><Sparkles size={11} style={{marginRight:5,verticalAlign:'middle'}}/>Rewrite with AI</>}
                 </button>
                 <button onClick={saveNote} disabled={saving} style={{ ...btnGhost, fontSize:11 }}>
                   {saving ? 'Saving…' : 'Save'}
