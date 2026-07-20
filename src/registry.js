@@ -1,21 +1,12 @@
 import * as PromptEngineering from './decks/prompt-engineering.jsx'
+import * as IntroToLLMs from './decks/introduction-to-llms.jsx'
 
-/* Add new decks here — the key becomes the URL slug: /deck/<slug> */
 export const REGISTRY = {
   'prompt-engineering': PromptEngineering,
+  'introduction-to-llms': IntroToLLMs,
 }
 
-/* Upcoming / coming-soon entries (displayed as placeholder cards on Home) */
 export const COMING_SOON = [
-  {
-    slug: 'generative-ai',
-    title: 'Generative AI Explained',
-    subtitle: 'From Tokens to Transformers',
-    description: 'What LLMs actually do under the hood — embeddings, attention, training, and why they hallucinate. For a non-ML audience.',
-    category: 'AI Foundations',
-    duration: '45–60 min',
-    level: 'Beginner',
-  },
   {
     slug: 'agentic-ai',
     title: 'Agentic AI: The Next Frontier',
@@ -45,7 +36,6 @@ export const COMING_SOON = [
   },
 ]
 
-/* Flat list of all live decks with meta, for Home catalog */
 export const ALL_DECKS = Object.entries(REGISTRY).map(([slug, mod]) => ({
   slug,
   ...mod.meta,

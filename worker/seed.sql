@@ -192,3 +192,43 @@ INSERT OR IGNORE INTO slides (id, deck_slug, position, type, section, timing, no
   'Open floor. My favorite way to run this: ask the audience to bring a real prompt they''re struggling with and we''ll improve it together live. That 5 minutes of live prompting is often the most memorable part of the session. If no one volunteers, ask: "What''s one task you''ve tried to use AI for that didn''t work the way you expected?" — and reverse-engineer what was missing from the prompt.',
   '{"big":"Q&A","heading":"Questions?","subheading":"Open floor — bring a real prompt and let''s fix it together.","url":"promptlab.robertbumanglagjr.com · /slides for this deck"}'
 );
+
+-- ── Introduction to LLMs deck ─────────────────────────────────
+INSERT OR IGNORE INTO decks (slug, title, subtitle, description, category, duration, level) VALUES (
+  'introduction-to-llms',
+  'Introduction to LLMs',
+  'The Machines Behind the Magic',
+  'A 60-minute workshop on how large language models actually work — tokens, context windows, the 2026 model landscape, benchmarks decoded, and hands-on labs.',
+  'AI Foundations',
+  '60 – 75 min',
+  'Beginner'
+);
+
+INSERT OR IGNORE INTO slides (id, deck_slug, position, type, section, timing, notes, content) VALUES
+('title','introduction-to-llms',1,'title','','0 min','Welcome everyone. Over the next hour we''ll pull back the curtain on large language models.','{"heading":"The Machines Behind the Magic"}'),
+('hook','introduction-to-llms',2,'cards','The Problem','1 min','Same question, five tools, five noticeably different answers. That is not random.','{"heading":"Same question. Five answers. Five personalities."}'),
+('agenda','introduction-to-llms',3,'agenda','Overview','3 min','Here is our map for the hour. Each section has a timer.','{"heading":"What we''ll cover today"}'),
+('s-what','introduction-to-llms',4,'section-divider','','4 min','Let''s start with the one-sentence answer.','{"number":"01","title":"What Is an LLM?","subtitle":"The one-sentence answer — and the mental model"}'),
+('what','introduction-to-llms',5,'cards','What Is an LLM?','5 min','Three things to internalize about what an LLM actually is.','{"heading":"Three things to internalize"}'),
+('s-hood','introduction-to-llms',6,'section-divider','','9 min','Now let''s open the hood slightly. No math — just the concepts that make you a better user.','{"number":"02","title":"Under the Hood","subtitle":"Plain-language mechanics — no math required"}'),
+('tokens','introduction-to-llms',7,'tokens','Under the Hood — Tokens','10 min','Everything in an LLM is measured in tokens. About three quarters of a word, or four characters.','{"heading":"Tokens — the unit of measurement for everything"}'),
+('context','introduction-to-llms',8,'context','Under the Hood — Context','14 min','The context window is the model''s working memory. When it''s full, earlier content falls off.','{"heading":"The context window — your model''s working memory"}'),
+('generate','introduction-to-llms',9,'generate','Under the Hood — Generation','17 min','Three-step lifecycle: pretraining, fine-tuning, RLHF. Temperature controls creativity vs precision.','{"heading":"How it learns to generate — in three steps"}'),
+('limits','introduction-to-llms',10,'limits','Under the Hood — Limits','20 min','Hallucination, knowledge cutoff, no cross-session memory. Know these and you''ll use LLMs far more effectively.','{"heading":"Three limits every user should know"}'),
+('s-landscape','introduction-to-llms',11,'section-divider','','22 min','Who are the players, what are the models called, and how do you make sense of the landscape?','{"number":"03","title":"The 2026 Model Landscape","subtitle":"Five players — models, pricing, and how to pick"}'),
+('players','introduction-to-llms',12,'cards','Landscape — The Players','23 min','Five players — four foundation-model labs, one answer engine. Perplexity is the key distinction.','{"heading":"Five players — four model labs and one answer engine"}'),
+('models','introduction-to-llms',13,'matrix','Landscape — Model Matrix','27 min','Current model tiers as of mid-2026. Flagship, daily driver, and fast/cheap tiers for each lab.','{"heading":"Current model tiers at a glance"}'),
+('economics','introduction-to-llms',14,'economics','Landscape — Cost & Latency','31 min','Input vs output pricing, TTFT vs throughput, reasoning tokens, cost levers. Cheapest model that passes wins.','{"heading":"The cost & latency spectrum"}'),
+('s-bench','introduction-to-llms',15,'section-divider','','34 min','Almost every AI announcement leads with benchmark scores. Let''s learn to read them.','{"number":"04","title":"Reading the Scoreboard","subtitle":"What benchmarks test — and when not to trust them"}'),
+('bench-what','introduction-to-llms',16,'benchmarks','Benchmarks — What They Test','35 min','MMLU-Pro, GPQA Diamond, SWE-bench Verified/Pro, AIME (saturated), ARC-AGI-2.','{"heading":"The standard benchmarks — what each actually tests"}'),
+('bench-read','introduction-to-llms',17,'bench-read','Benchmarks — How to Read Them','39 min','Saturation, contamination, selective reporting, real-world gap. Three-step decision framework.','{"heading":"Why benchmarks can mislead — and a better framework"}'),
+('s-daily','introduction-to-llms',18,'section-divider','','42 min','Let''s ground this in the real world.','{"number":"05","title":"Daily Life & the Future","subtitle":"Five examples today — and what''s coming next"}'),
+('daily','introduction-to-llms',19,'cards','LLMs in Daily Life','43 min','Five use cases people actually use every day: search, writing, coding, learning, translation.','{"heading":"Five ways LLMs are changing knowledge work today"}'),
+('future','introduction-to-llms',20,'cards','Where It''s Heading','47 min','Five real directions: agents, persistent memory, on-device, multimodal, reasoning models.','{"heading":"Five directions — real, accelerating, but not magic yet"}'),
+('s-lab','introduction-to-llms',21,'section-divider','','50 min','Enough theory. Time to use these things.','{"number":"06","title":"Lab Time","subtitle":"Two exercises — Tool Showdown + Pick the Right Model"}'),
+('lab1','introduction-to-llms',22,'lab','Lab 1 — Tool Showdown','51 min','Ten minutes. Same prompt, five tools. Observe differences. Debrief: what surprised you?','{"badge":"Lab 1 of 2 · 10 minutes · Groups of 3–4","heading":"Tool Showdown — same prompt, five tools"}'),
+('lab2','introduction-to-llms',23,'lab','Lab 2 — Pick the Right Model','61 min','Five minutes, pairs. Three scenarios. Pick a model, justify with quality and cost and latency.','{"badge":"Lab 2 of 2 · 5 minutes · Pairs","heading":"Pick the Right Model — and justify it"}'),
+('s-takeaway','introduction-to-llms',24,'section-divider','','66 min','Let''s close it out.','{"number":"07","title":"Takeaways","subtitle":"Five rules — and where to go next"}'),
+('rules','introduction-to-llms',25,'rules','Takeaways — 5 Rules','67 min','Five rules: predicts not knows; tokens are the meter; match model to task; benchmarks are a start; cheapest that passes wins.','{"heading":"5 rules of working with LLMs"}'),
+('gloss','introduction-to-llms',26,'glossary','Takeaways — Glossary & Refs','69 min','Quick-reference glossary plus three foundational papers and Stanford AI Index.','{"heading":"Quick-reference glossary"}'),
+('qa','introduction-to-llms',27,'qa','','','Open floor. Seed with: what is one thing you tried that did not work? Diagnose using what we covered.','{"big":"Q&A","heading":"Questions?","subheading":"Open floor — bring a scenario and let''s find the right model together.","url":"lectures.robertbumanglagjr.com/deck/introduction-to-llms"}');
